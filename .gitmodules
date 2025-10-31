@@ -1,0 +1,7 @@
+
+[submodule "dependencies/dawn"]
+	path = dependencies/dawn
+	url = https://dawn.googlesource.com/dawn
+[submodule "dependencies/glslang"]
+	path = dependencies/glslang
+	url = https://github.com/KhronosGroup/glslang.git
