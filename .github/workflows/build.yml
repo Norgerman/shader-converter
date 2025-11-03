@@ -1,0 +1,69 @@
+name: Build Shader Converter
+on: workflow_dispatch
+
+env:
+  EMSCRIPTEN_VERSION: 4.0.18
+  EMSDK_HOME: ${{ github.workspace }}/emsdk
+  DEPOT_TOOLS_HOME: ${{ github.workspace }}/depot_tools
+  ARTIFACTS_ROOT: ${{ github.workspace }}/artifacts
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          submodules: true
+          path: shader-converter
+      - name: Checkout emsdk
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+          path: emsdk
+          repository: emscripten-core/emsdk
+      - name: Install DepotTools
+        run: |
+          git clone https://chromium.googlesource.com/chromium/tools/depot_tools
+      - name: Install Emscripten
+        run: |
+          cd emsdk
+          ./emsdk install $EMSCRIPTEN_VERSION
+          ./emsdk activate $EMSCRIPTEN_VERSION
+      - name: Sync DAWN
+        run: |
+          export PATH=$DEPOT_TOOLS_HOME:$PATH
+          cd shader-converter/dependencies/dawn
+          cp scripts/standalone.gclient .gclient
+          gclient sync --no-history
+          cd ../../
+      - name: Apply Patches
+        run: |
+          cd shader-converter
+          git apply patches/dawn.patch
+      - name: Build
+        run: |
+          mkdir -p $ARTIFACTS_ROOT/web $ARTIFACTS_ROOT/node
+          source $EMSDK_HOME/emsdk_env.sh
+          cd shader-converter
+          mkdir build
+          cd build
+          emcmake cmake -DCMAKE_BUILD_TYPE=RELEASE -G Ninja ../
+          ninja shader_converter -j 4
+          cp shader_converter.js $ARTIFACTS_ROOT/web/shader_converter.js
+          cp shader_converter.wasm $ARTIFACTS_ROOT/web/shader_converter.wasm
+          emcmake cmake -DCMAKE_BUILD_TYPE=RELEASE -DENABLE_ENVIRONMENT_NODE=ON -G Ninja ../
+          ninja shader_converter -j 4
+          cp shader_converter.js $ARTIFACTS_ROOT/node/shader_converter.js
+          cp shader_converter.wasm $ARTIFACTS_ROOT/node/shader_converter.wasm
+      - name: Upload Web Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: artifacts/web
+          name: shader-converter-web
+      - name: Upload Node Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: artifacts/node
+          name: shader-converter-node
