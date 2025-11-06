@@ -164,6 +164,7 @@ void glsl_to_wgsl(const char *glsl, int stage_int, bool gen_debug,
     case glslang::EShTargetSpv_1_3:
     case glslang::EShTargetSpv_1_4:
     case glslang::EShTargetSpv_1_5:
+    case glslang::EShTargetSpv_1_6:
         break;
     default:
         auto err = std::string("Invalid SPIR-V version number");

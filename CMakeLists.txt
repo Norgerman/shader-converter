@@ -16,6 +16,7 @@ target_link_options(shader_converter
     PRIVATE
     -sMODULARIZE=1
     --js-library=${CMAKE_CURRENT_SOURCE_DIR}/src/callbacks.js
+    --extern-pre-js=${CMAKE_CURRENT_SOURCE_DIR}/src/pre.js
     -sEXPORTED_FUNCTIONS=["_free","_malloc","_glsl_to_wgsl"]
     -sEXPORTED_RUNTIME_METHODS=["HEAPU8","lengthBytesUTF8"]
     $<IF:$<BOOL:${ENABLE_ENVIRONMENT_NODE}>,
