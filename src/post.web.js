@@ -1,3 +1,7 @@
+})(_module, _exports);
+
+const Module = _module.exports;
+
 export default (() => {
     const initialize = (wasmPath) => {
         wasmPath = wasmPath || 'shader_converter.wasm'

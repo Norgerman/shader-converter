@@ -1,4 +1,8 @@
 
+})(_module, _exports);
+
+const Module = _module.exports;
+
 const { Buffer } = require('node:buffer');
 const wasm = {};
 Module(wasm);

@@ -29,3 +29,8 @@ function get_spirv_spec(shader_stage, spirv_version) {
         spirv_version_int
     }
 }
+
+const _exports = {};
+const _module = { exports: _exports };
+
+(function (module, exports) {
