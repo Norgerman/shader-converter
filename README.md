@@ -25,7 +25,7 @@ prerequisites
    ```bash
    git apply patches/dawn.patch
    ```
-4. cmake(create build directory under root，use ninja for example，use make will work to)
+4. cmake(create build directory under root，use ninja for example，use make will work too)
    ```bash
    # FOR WEB
    emcmake cmake -DCMAKE_BUILD_TYPE=RELEASE -G Ninja ../
