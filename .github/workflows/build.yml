@@ -2,7 +2,7 @@ name: Build Shader Converter
 on: workflow_dispatch
 
 env:
-  EMSCRIPTEN_VERSION: 4.0.18
+  EMSCRIPTEN_VERSION: 5.0.4
   EMSDK_HOME: ${{ github.workspace }}/emsdk
   DEPOT_TOOLS_HOME: ${{ github.workspace }}/depot_tools
   ARTIFACTS_ROOT: ${{ github.workspace }}/artifacts
