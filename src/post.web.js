@@ -1,4 +1,4 @@
-})(_module, _exports);
+}) (_module, _exports);
 
 const Module = _module.exports;
 
@@ -21,7 +21,7 @@ export default (() => {
             }
             if (!wasm._return_error_callback) {
                 wasm._return_error_callback = (data, length) => {
-                    error = new Error(wasm.HEAPU8.subarray(data, data + length));
+                    error = new Error(textDecoder.decode(wasm.HEAPU8.subarray(data, data + length)));
                 };
             }
             var convertGLSLToWGSL = (code, shader_stage, gen_debug, spirv_version, disableUniformityAnalysis) => {
