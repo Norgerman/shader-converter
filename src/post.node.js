@@ -16,11 +16,6 @@ function buildNodeModule() {
         };
     }
 
-    if (!wasm._return_string_callback) {
-        wasm._return_string_callback = (data, length) => {
-            wgsl = Buffer.from(wasm.HEAPU8.buffer, data, length).toString('utf-8');
-        };
-    }
     if (!wasm._return_error_callback) {
         wasm._return_error_callback = (data, length) => {
             error = Buffer.from(wasm.HEAPU8.buffer, data, length).toString('utf-8');

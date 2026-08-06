@@ -7,7 +7,6 @@
 #include <SPIRV/GlslangToSpv.h>
 #include <emscripten.h>
 #include <glslang/Public/ShaderLang.h>
-#include <sstream>
 #include <string>
 #include <tint/tint.h>
 #include <vector>
@@ -184,10 +183,9 @@ void glsl_to_wgsl(const char *glsl, int stage_int, bool gen_debug,
     shader.setEnvTarget(glslang::EShTargetSpv, spirv_version);
 
     if (!shader.parse(&DefaultTBuiltInResource, 100, true, EShMsgDefault)) {
-        std::stringstream ss;
-        ss << "Parse failed\n"
-           << shader.getInfoLog() << std::endl;
-        auto err = std::move(ss).str();
+        std::string err = "Parse failed\n";
+        err += shader.getInfoLog();
+        err += '\n';
         return_error(err.data(), err.size());
         return;
     }
@@ -196,10 +194,9 @@ void glsl_to_wgsl(const char *glsl, int stage_int, bool gen_debug,
     program.addShader(&shader);
 
     if (!program.link(EShMsgDefault)) {
-        std::stringstream ss;
-        ss << "Link failed\n"
-           << program.getInfoLog() << std::endl;
-        auto err = std::move(ss).str();
+        std::string err = "Link failed\n";
+        err += program.getInfoLog();
+        err += '\n';
         return_error(err.data(), err.size());
         return;
     }
@@ -219,9 +216,8 @@ void glsl_to_wgsl(const char *glsl, int stage_int, bool gen_debug,
     auto result = tint::SpirvToWgsl(spirv, options);
 
     if (result != tint::Success) {
-        std::stringstream ss;
-        ss << result.Failure() << std::endl;
-        auto err = std::move(ss).str();
+        auto err = result.Failure().reason;
+        err += '\n';
         return_error(err.data(), err.size());
         return;
     }
