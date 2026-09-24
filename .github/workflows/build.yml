@@ -1,5 +1,9 @@
 name: Build Shader Converter
-on: workflow_dispatch
+on: 
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
 
 env:
   EMSCRIPTEN_VERSION: 6.0.3
