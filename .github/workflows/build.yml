@@ -2,7 +2,7 @@ name: Build Shader Converter
 on: 
   push:
     branches:
-      - 'main'
+      - 'master'
   workflow_dispatch:
 
 env:
